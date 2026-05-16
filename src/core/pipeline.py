@@ -1,3 +1,4 @@
+import os
 import tempfile
 from pathlib import Path
 from src.core.audio import extract_audio
@@ -10,7 +11,13 @@ def is_url(source: str) -> bool:
 def video_to_text(video_path: str, **kwargs) -> str:
     return media_to_text(video_path, **kwargs)
 
-def media_to_text(source: str, model_size: str = 'base', language: str | None = None) -> str:
+def media_to_text(
+    source: str,
+    model_size: str | None = None,
+    language: str | None = None,
+) -> str:
+    if model_size is None:
+        model_size = os.getenv("WHISPER_MODEL", "base")
     with tempfile.TemporaryDirectory() as tmp:
         tmp_path = Path(tmp)
 

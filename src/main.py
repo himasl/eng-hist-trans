@@ -10,7 +10,7 @@ def main() -> None:
         sys.exit(1)
 
     source = sys.argv[1]
-    text = media_to_text(source, model_size='base')
+    text = media_to_text(source)
     if '-o' in sys.argv:
         out = Path('/app/output/result.txt')
         out.parent.mkdir(parents=True, exist_ok=True)

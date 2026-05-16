@@ -38,7 +38,7 @@ def index():
 @app.post("/transcribe/file")
 async def transcribe_file(
     file: UploadFile = File(...),
-    model_size: str = "base",
+    model_size: str | None = None,
     language: str | None = None,
 ):
     suffix = Path(file.filename or "video.mp4").suffix or ".mp4"

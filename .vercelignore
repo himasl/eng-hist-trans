@@ -1,0 +1,8 @@
+data/
+output/
+*.mp4
+*.webm
+*.mkv
+.git/
+.venv/
+__pycache__/

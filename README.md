@@ -78,6 +78,16 @@ docker compose run --rm conv /data/test.mp4 -o
 
 Язык: автоопределение; для русского можно передать `"language": "ru"` в API.
 
+## Деплой на Vercel
+
+1. Установи [Vercel CLI](https://vercel.com/docs/cli): `npm i -g vercel`
+2. В корне проекта: `vercel` (первый раз — логин и настройка проекта)
+3. Прод: `vercel --prod`
+
+Файлы: `app.py` (FastAPI), `vercel.json`, при сборке копируется `static/` → `public/`.
+
+**Ограничения Vercel:** лимит времени функции (до 60 с на Pro), размер загрузки ~4.5 MB, тяжёлая сборка (Whisper). На Vercel по умолчанию модель `tiny` (`WHISPER_MODEL` в `vercel.json`). Для длинных видео надёжнее Docker (Railway, VPS).
+
 ## Дальше
 
 Планируется Telegram-бот и Mini App на том же API (`media_to_text` / эндпоинты `/transcribe/*`).
