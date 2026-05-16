@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Видео → текст</title>
+  <link rel="stylesheet" href="/static/style.css" />
+</head>
+<body>
+  <main class="card">
+    <header>
+      <h1>Видео → текст</h1>
+      <p class="subtitle">Загрузите файл или вставьте ссылку — скачайте расшифровку в .txt или .docx</p>
+    </header>
+
+    <div class="tabs" role="tablist">
+      <button type="button" class="tab active" data-mode="file" role="tab" aria-selected="true">
+        Видеофайл
+      </button>
+      <button type="button" class="tab" data-mode="url" role="tab" aria-selected="false">
+        Ссылка
+      </button>
+    </div>
+
+    <section id="panel-file" class="panel active">
+      <label class="dropzone" id="dropzone">
+        <input type="file" id="file-input" accept="video/*,audio/*,.mp4,.webm,.mkv,.mov" hidden />
+        <span class="dropzone-text" id="dropzone-label">Перетащите видео сюда или нажмите для выбора</span>
+      </label>
+      <button type="button" class="primary" id="btn-file" disabled>Расшифровать</button>
+    </section>
+
+    <section id="panel-url" class="panel hidden">
+      <label class="field">
+        <span>Ссылка на видео</span>
+        <input type="url" id="url-input" placeholder="https://www.youtube.com/watch?v=..." />
+      </label>
+      <button type="button" class="primary" id="btn-url">Расшифровать</button>
+    </section>
+
+    <div id="status" class="status hidden" aria-live="polite"></div>
+    <div id="error" class="error hidden" role="alert"></div>
+
+    <section id="result" class="result hidden">
+      <p class="result-label">Готово</p>
+      <pre id="preview"></pre>
+      <div class="download-row">
+        <button type="button" class="secondary" id="btn-download-txt">Скачать .txt</button>
+        <button type="button" class="secondary" id="btn-download-docx">Скачать .docx</button>
+      </div>
+    </section>
+  </main>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>

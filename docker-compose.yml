@@ -1,0 +1,14 @@
+services:
+  conv:
+    build: .
+    volumes:
+      - ./data:/data:ro
+      - ./output:/app/output
+  
+  app:
+    build: .
+    entrypoint: ["uvicorn", "src.api.main:app", "--host", "0.0.0.0", "--port", "8000"]
+    ports:
+      - "8000:8000"
+    volumes:
+      - './output:/app/output'
