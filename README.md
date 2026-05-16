@@ -2,7 +2,7 @@
 
 Сервис расшифровывает речь из **локального видео** или **ссылки** (YouTube и др.) и отдаёт текст. Есть CLI, HTTP API и веб-интерфейс.
 
-**Стек:** Python, ffmpeg, yt-dlp, faster-whisper, FastAPI.
+**Стек:** Python, ffmpeg, yt-dlp, faster-whisper, FastAPI, Docker.
 
 ## Как это работает
 
@@ -74,23 +74,42 @@ docker compose run --rm conv /data/test.mp4 -o
 
 ## Переменные и настройки
 
-В коде по умолчанию модель Whisper: `base`. Для быстрых тестов можно указать `tiny` в `src/main.py` или в теле запроса API (`model_size`).
+- `WHISPER_MODEL` — `tiny`, `base`, `small` (в Docker по умолчанию `tiny`; локально без env — `base`)
+- `language` в API — `"ru"` или не указывать для автоопределения
 
-Язык: автоопределение; для русского можно передать `"language": "ru"` в API.
-<<<<<<< HEAD
+## Бесплатный деплой (рекомендации)
 
-## Деплой на Vercel
+Проект тяжёлый (ffmpeg + Whisper, долгие запросы). Нужен хостинг с **Docker** и без жёсткого лимита в 10–60 секунд, как у serverless.
 
-1. Установи [Vercel CLI](https://vercel.com/docs/cli): `npm i -g vercel`
-2. В корне проекта: `vercel` (первый раз — логин и настройка проекта)
-3. Прод: `vercel --prod`
+| Платформа | Плюсы | Минусы |
+|-----------|--------|--------|
+| **[Railway](https://railway.app)** | Deploy из GitHub, Dockerfile, просто | ~$5 кредитов/мес бесплатно, потом платно; сервис «засыпает» |
+| **[Render](https://render.com)** | Free Web Service + Docker | Free tier засыпает, медленный cold start, лимиты RAM/CPU |
+| **[Fly.io](https://fly.io)** | Docker, близко к пользователю | Нужна карта; free allowance на несколько маленьких VM |
+| **[Oracle Cloud](https://www.oracle.com/cloud/free/)** | VPS Always Free (ARM), полный контроль | Настройка VPS и Docker вручную, дольше старт |
+| **[Google Cloud Run](https://cloud.google.com/run)** | Docker, pay-per-use | Free tier есть; таймаут запроса до 60 мин (настроить), cold start |
 
-Файлы: `app.py` (FastAPI), `vercel.json`, при сборке копируется `static/` → `public/`.
+**Не подходят:** Vercel, Netlify Functions — нет нормального ffmpeg/Whisper и мало времени на запрос.
 
-**Ограничения Vercel:** лимит времени функции (до 60 с на Pro), размер загрузки ~4.5 MB, тяжёлая сборка (Whisper). На Vercel по умолчанию модель `tiny` (`WHISPER_MODEL` в `vercel.json`). Для длинных видео надёжнее Docker (Railway, VPS).
+### Railway
+
+1. GitHub → New Project → Deploy from repo.
+2. Railway подхватит `Dockerfile` и `railway.toml` (healthcheck `/health`).
+3. Старт: `start.sh` → uvicorn на порту `$PORT` (Railway задаёт сам).
+4. В Variables при OOM: `WHISPER_MODEL=tiny` (уже в Dockerfile) или увеличь RAM в настройках сервиса.
+5. **Не задавай** Custom Start Command на `python -m src.main` — это CLI, контейнер сразу падает.
+
+После деплоя открой выданный URL → сайт и `/docs`.
+
+### VPS (Oracle / Hetzner)
+
+```bash
+git clone <repo> && cd conv
+docker compose up -d app
+```
+
+Поставь reverse proxy (Caddy/nginx) с HTTPS — нужно для Telegram Mini App.
 
 ## Дальше
 
-Планируется Telegram-бот и Mini App на том же API (`media_to_text` / эндпоинты `/transcribe/*`).
-=======
->>>>>>> 213adaef091f876865ce68b16ce758f711244bcb
+Telegram-бот и Mini App на том же API (`/transcribe/*`).

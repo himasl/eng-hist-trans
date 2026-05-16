@@ -11,5 +11,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY src/ ./src/
 COPY static/ ./static/
+COPY start.sh /app/start.sh
+RUN chmod +x /app/start.sh
 
-ENTRYPOINT ["python", "-m", "src.main"]
+ENV PORT=8000
+ENV WHISPER_MODEL=tiny
+
+EXPOSE 8000
+
+# Railway / Render: веб-сервер. CLI: docker compose run --entrypoint ...
+CMD ["/app/start.sh"]
