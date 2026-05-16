@@ -61,7 +61,7 @@ docker compose run --rm conv /data/test.mp4 -o
 
 Положи тестовое видео в `data/test.mp4`.
 
-## API (кратко)
+## API
 
 | Метод | Путь | Описание |
 |-------|------|----------|
@@ -77,7 +77,3 @@ docker compose run --rm conv /data/test.mp4 -o
 В коде по умолчанию модель Whisper: `base`. Для быстрых тестов можно указать `tiny` в `src/main.py` или в теле запроса API (`model_size`).
 
 Язык: автоопределение; для русского можно передать `"language": "ru"` в API.
-
-## Дальше
-
-Планируется Telegram-бот и Mini App на том же API (`media_to_text` / эндпоинты `/transcribe/*`).
