@@ -76,6 +76,18 @@ docker compose run --rm conv /data/test.mp4 -o
 
 - `WHISPER_MODEL` — `tiny`, `base`, `small` (в Docker по умолчанию `tiny`; локально без env — `base`)
 - `language` в API — `"ru"` или не указывать для автоопределения
+- `YT_COOKIES_FILE` — путь к `cookies.txt` (Netscape) для YouTube, если сервер получает «Sign in to confirm you're not a bot»
+
+### YouTube на Railway / VPS
+
+С IP датацентра YouTube часто блокирует yt-dlp. В проекте: Deno в Docker + клиент `android,web`.
+
+Если ошибка остаётся:
+
+1. **Загружайте видео файлом** на сайте (вкладка «Видеофайл») — надёжнее.
+2. Экспортируйте cookies из браузера ([инструкция yt-dlp](https://github.com/yt-dlp/yt-dlp/wiki/Extractors#exporting-youtube-cookies)), положите в репо/volume как `cookies.txt`, в Railway Variables: `YT_COOKIES_FILE=/app/cookies.txt` (и добавьте файл при деплое или через volume).
+
+Cookies периодически протухают — обновляйте вручную.
 
 ## Бесплатный деплой (рекомендации)
 

@@ -1,8 +1,12 @@
 FROM python:3.12-slim
 
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    ffmpeg \
+    ffmpeg curl ca-certificates unzip \
+    && curl -fsSL https://deno.land/install.sh | sh \
+    && ln -sf /root/.deno/bin/deno /usr/local/bin/deno \
     && rm -rf /var/lib/apt/lists/*
+
+ENV PATH="/root/.deno/bin:${PATH}"
 
 WORKDIR /app
 
